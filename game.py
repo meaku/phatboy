@@ -5,9 +5,19 @@ import os
 import pygame
 import glob
 
-DRUM_FOLDER = "drums2"
+# import pimoroni libs
+import unicornhat as unicorn
+import drumhat
 
-BANK = os.path.join(os.path.dirname(__file__), DRUM_FOLDER)
+# setup unicorn hat (https://github.com/pimoroni/unicorn-hat)
+unicorn.set_layout(unicorn.AUTO)
+unicorn.rotation(180)
+unicorn.brightness(0.2)
+width,height=unicorn.get_shape()
+
+# setup sound effects 
+SOUND_FOLDER = "sounds"
+BANK = os.path.join(os.path.dirname(__file__), SOUND_FOLDER)
 
 pygame.mixer.init(44100, -16, 1, 512)
 pygame.mixer.set_num_channels(16)
@@ -16,17 +26,21 @@ files = glob.glob(os.path.join(BANK, "*.wav"))
 files.sort()
 samples = [pygame.mixer.Sound(f) for f in files]
 
+# inital state
+score=1
+counter=0
+up=1
+lastjump=counter
+speed=0.5
+hearts=3
 
-import unicornhat as unicorn
-
-import drumhat
-
-def hit_handler(event):
+def hit_handler():
   jump()
   global hearts
   if hearts < 0:
     hearts=3
 
+# triggers reset
 def reset():
   print("reset")
   global hearts
@@ -38,20 +52,11 @@ def reset():
   global score
   score=1
 
+# user input
+# triggers reset
 drumhat.on_hit(1, reset)
-
+# triggers jump
 drumhat.on_hit(8, hit_handler)
-
-score=1
-counter=0
-up=1
-lastjump=counter
-speed=0.5
-hearts=3
-unicorn.set_layout(unicorn.AUTO)
-unicorn.rotation(180)
-unicorn.brightness(0.2)
-width,height=unicorn.get_shape()
 
 def tempo():
   global speed
