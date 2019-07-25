@@ -47,3 +47,7 @@ If you want to keep it running in the background, use `sudo python game.py &`
 Unicorn pHAT and Speaker pHAT are using the same ports to control LEDs / sound. 
 This leads to weird sounds whenever the pixels are updated. In our case we liked the effect and weird sound :) 
 
+# LICENSE 
+
+MIT.
+
